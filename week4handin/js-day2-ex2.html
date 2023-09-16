@@ -1,0 +1,55 @@
+
+<head>
+    <title>EX 2</title>
+
+<style>
+  .my-div {
+    width: 25px;
+    height: 25px;
+    background-color: red;
+    margin: 1px;
+  }
+</style>
+</head>
+<body>
+  <div id="outer">
+    <div id="div1" class="my-div"></div>
+    <div id="div2" class="my-div"></div>
+    <div id="div3" class="my-div"></div>
+    <div id="div4" class="my-div"></div>
+    <div id="div5" class="my-div"></div>
+    <div id="div6" class="my-div"></div>
+    <div id="div7" class="my-div"></div>
+    <div id="div8" class="my-div"></div>
+    <div id="div9" class="my-div"></div>
+    <div id="div10" class="my-div"></div>
+  </div>
+
+  <div>
+    <p id="paragraph" ></p>
+</div>
+
+<div> 
+<a href="index.html" >Go back to start</a>
+</div>
+
+<div style="border: 1px solid black; border-radius: 5px;padding: 1em; margin-top: 5px;">
+  Event bubbling is the order of how events are "bubbled" in the DOM tree. When you run an event, 
+  it will move through the dom starting from the parent elements in a hierarchical order. <br>
+  This lets you have multiple child elements that share an event handler without having to duplicate it.
+<br>
+  In my solution here, I wrap all the divs in a parent div called "outer", 
+  which lets all the child divs get access to the eventhandler in my script tag.
+  <br>
+</div>
+
+
+  <script>
+    document.getElementById("outer").onclick = (e) => {
+      var id = e.target.id;
+      console.log("ID: " + id);
+      document.getElementById("paragraph").innerText = id;
+    };
+  </script>
+</body>
+

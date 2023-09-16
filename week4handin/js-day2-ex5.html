@@ -1,0 +1,119 @@
+<body>
+    <table class="table">
+        <thead id="tHeader">
+        <tr>
+            <th>ID</th><th>Year</th><th>Make</th><th>Model</th><th id="priceHeader"><a href =# >Price</a></th>
+        </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      
+    </table>
+    <form id="form">
+    <input type="number" id="filterForm">
+    <input type="submit" id="btnFilter" value="Price less than">
+</form>
+<button id="resetBtn" style="margin: 10px;">Reset table</button>
+
+
+<div> 
+    <a href="index.html">Go back to start</a>
+    </div>
+
+    
+<div style="border: 1px solid black; border-radius: 5px;padding: 1em;">
+    Replace this with your explanation of the following<br>
+    <ul>
+        <li>The JavaScript "template string" and where/how you have used it</li>
+        <li>I have used Map to insert our data from the "Cars" array into the HTML table. I first point to the tablebody with getElement,
+            then I iterate through the array and insert the html for a row with the data from the array.
+        </li>
+        <li>I used filter in the filterTable function. when you click the filter button, the function will take the input that 
+            was written in the input field and parse it to a float.
+            Then I make a new list that filters out all elements where the price is higher than what the user inputted.
+        </li>
+        <li>I use the function makeList to fill out my table with data. This function takes a list as a parameter
+            and will map the list into the table. 
+            When I sort and filter, I make a new list that includes the updated data. When I then make a list, I map the new lists, 
+            which means that I can show the updated data without changing anything about the original list.
+        </li>
+    </ul>
+    Feel free to write in danish
+</div>
+
+<script>
+    const cars = [
+  { id: 1, year: 1997, make: 'Ford', model: 'E350', price: 3000 },
+  { id: 2, year: 1999, make: 'Chevy', model: 'Venture', price: 4900 },
+  { id: 3, year: 2000, make: 'Chevy', model: 'Venture', price: 5000 },
+  { id: 4, year: 1996, make: 'Jeep', model: 'Grand Cherokee', price: 4799 },
+  { id: 5, year: 2005, make: 'Volvo', model: 'V70', price: 44799 }
+];
+
+function makeList(array){
+    const tBody = document.getElementById("tbody");
+  const tRows = array.map((c) => {
+        return `<tr>
+      <td>${c.id}</td>
+      <td>${c.year}</td>
+      <td>${c.make}</td>
+      <td>${c.model}</td>
+      <td>${c.price}</td>
+    </tr>`
+    });
+tBody.innerHTML = tRows.join("");
+}
+makeList(cars);
+
+function filterTable(){
+    
+   const filteredTable = document.getElementById("btnFilter").onclick = (evt) => {
+      evt.preventDefault();
+      const priceFilter = parseFloat(document.getElementById("filterForm").value);
+      const filteredTable = cars.filter((c)=>c.price < priceFilter);
+        makeList(filteredTable)
+    }; }
+
+        filterTable();
+
+        document.getElementById("resetBtn").onclick = (evt)=>{
+            evt.preventDefault();
+            document.getElementById("form").reset(); //Clears the input field
+            makeList(cars);
+        }
+
+        let sortCheck = 0;
+
+
+        let sortOrderPrice = 1;
+    document.getElementById("priceHeader").onclick =  function () {
+        const sortedCars = cars.sort((a,b)=>{
+            let sortResult = (a.price-b.price)* sortOrderPrice;
+            return sortResult;
+        })
+        sortOrderPrice *= -1;
+        makeList(sortedCars);
+    }
+    
+    
+    
+    
+sortByPrice();
+
+
+   /*cars.sort((c1,c2) => {
+            let sortResult = 0;
+            if(sortCheck===0){
+                sortCheck = 1;
+                sortResult = c1.price - c2.price;
+            }
+            else{
+                sortCheck = 0;
+                sortResult = c2.price - c1.price;
+            }
+        return sortResult;
+        })
+        updateTable(sortedTable);
+    }*/
+
+</script>
+</body>
