@@ -1,0 +1,81 @@
+<head>
+  <title>EX 3</title>
+</head>
+
+<body>
+  <div>
+    <ul id="newUl"></ul>
+  </div>
+
+  <form>
+    <input type="text" id="nameInput" />
+    <input type="submit" id="btnAdd" value="Add name" />
+    <input type="submit" id="btnRmvFirst" value="Remove first" />
+    <input type="submit" id="btnRmvLast" value="Remove last" />
+  </form>
+
+  <div>
+    <a href="index.html">Go back to start</a>
+  </div>
+
+  <div style="border: 1px solid black; border-radius: 5px; padding: 1em">
+    Replace this with your explanation of the concepts<br />
+    <ul>
+      <li>
+        preventDefault() is used to overwrite the default behaviour of a
+        function. <br />
+        In this instance, I use it to prevent the push(), shift() and pop() from
+        refreshing the page whenever I update the dom.
+      </li>
+      <br />
+      <li>
+        When using innerHTML to recieve user input, be aware that user will be
+        able to inject their own HTML into the page. <br />
+        to prevent this, you can make functions that convert HTML symbols like
+        like tags to strings.
+      </li>
+      <br />
+      <li>
+        I changed the DOM list by using the push(), shift() and pop() functions,
+        which manipulates the array itself. <br />
+        this lets us have a "single source of truth" instead of updating the
+        array and the dom seperately
+      </li>
+    </ul>
+ 
+  </div>
+
+  <script>
+    const names = ["Lars", "Peter", "Jan", "Lise", "Janne"];
+    function makeList() {
+      document.getElementById("newUl").innerHTML = names
+        .map((n) => `<li>${n}</li>`)
+        .join("");
+    }
+    makeList();
+
+    //Add button
+    document.getElementById("btnAdd").onclick = (evt) => {
+      evt.preventDefault();
+      const name = document.getElementById("nameInput").value;
+      names.push(name);
+      makeList();
+    };
+
+    //Remove first button
+    document.getElementById("btnRmvFirst").onclick = (evt) => {
+      evt.preventDefault();
+      const name = document.getElementById("nameInput").value;
+      names.shift();
+      makeList();
+    };
+
+    //Remove Last button
+    document.getElementById("btnRmvFirst").onclick = (evt) => {
+      evt.preventDefault();
+      const name = document.getElementById("nameInput").value;
+      names.pop();
+      makeList();
+    };
+  </script>
+</body>

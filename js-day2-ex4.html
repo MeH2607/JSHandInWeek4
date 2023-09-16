@@ -1,0 +1,40 @@
+<select id="car-selector">
+  <!-- Options will be populated by JavaScript -->
+</select>
+<body>
+<h2>Selected Brand</h2>
+<h4 id="car-make"></h4>
+
+<div>
+  <a href="index.html">Go back to start</a>
+</div>
+
+<div style="border: 1px solid black; border-radius: 5px; padding: 1em">
+
+  The select element is great for when you have a predetermined list of options
+  the user should have access too. <br />
+  To solve this exercise, I made a function that iterates the array of cars and
+  create a new entry into the select element for every car and how it's value and how it's presented in the dropdown list, which in this page is the same. <br />
+  appendChil is used to insert an element into another element, like here we insert a car element to the options element.
+</div>
+
+<script>
+  const cars = ["Ford", "WW", "Toyota", "Volvo"]; //Assume this was fetched from the backend
+  //TODO
+  // The select element get populated with the car-makers
+  const selectCar = document.getElementById("car-selector");
+
+  cars.forEach((c) => {
+    const option = document.createElement("option");
+    option.value = c;
+    option.text = c;
+    selectCar.appendChild(option);
+  });
+
+  //when a value is selected, read the selected value and update the element with id= car-make with the value as sketched below
+
+  selectCar.addEventListener("change", (event) => {
+    document.getElementById("car-make").innerText = event.target.value;
+  });
+</script>
+</body>

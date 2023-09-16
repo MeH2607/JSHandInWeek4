@@ -1,0 +1,37 @@
+<head>
+    <title>EX 1</title>
+</head>
+
+<h1>EX 1</h1>
+
+<body>
+<div id="d1" style="width: 100px; margin: 1px; background-color: blue">
+  &nbsp;
+</div>
+<div id="d2" style="width: 100px; margin: 1px; background-color: blue">
+  &nbsp;
+</div>
+<div id="d3" style="width: 100px; margin: 1px; background-color: blue">
+  &nbsp;
+</div>
+
+<button id="btn">Press me to change styling</button>
+
+<a href="index.html">Go back to start</a>
+
+<div style="border: 1px solid black; border-radius: 5px;padding: 1em;">
+  Replace with a descriptiton that clearly show that you understand the concept of event bubbling, and how you have used it in your solution<br>
+  Feel free to write in danish
+</div>
+
+<script>
+  document.getElementById("btn").onclick = () => {
+    document.getElementById("d1").style.backgroundColor = "Yellow";
+    document.getElementById("d2").style.backgroundColor = "Green";
+    document.getElementById("d3").style.backgroundColor = "Red";
+  };
+
+
+</script>
+
+</body>
