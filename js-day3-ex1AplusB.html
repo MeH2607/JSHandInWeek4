@@ -1,0 +1,107 @@
+<body>
+  <form>
+    <input type="text" id="inputField" />
+    <input type="submit" id="submitBtn" value="Get user By id" />
+  </form>
+
+  <button id="getAllBtn">Get all users</button>
+
+  <p id="userInfo"></p>
+
+  <table class="table">
+    <thead id="tHeader">
+      <tr>
+        <th>Name</th>
+        <th>phone</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+
+  <div style="border: 1px solid black; border-radius: 5px; padding: 1em">
+    YOUR REPLY MUST INCLUDE (in a div on the page for the solution) A "SHORT"
+    description to the following
+    <ul>
+      <li>What is a promise</li>
+      <ul>
+        <li>Svar</li>
+      </ul>
+
+      <li>What does the fetch method return</li>
+      <ul>
+        <li>The fetch method returns 2 promises, the first checks if the response code returns OK and the other handles the JSON data. Both of these will never fail unless there's an error with the fetch connection</li>
+      </ul>
+
+      <li>Why do we need to have two .then callbacks with our fetch code?</li>
+      <ul>
+        <li>the first checks if the response code returns OK and the other handles the JSON data</li>
+      </ul>
+
+      <li>What can and should you do in the first?</li>
+      <ul>
+        <li>In the first you return the response code you recieve from the connection</li>
+      </ul>
+
+      <li>What can and should you do in the last?</li>
+      <ul>
+        <li>In the 2nd promise you handle the json data, by giving the recieved data a name then handle it.</li>
+        <li>In this code forexample, I recieve data from the URL and name it "data", then I convert the JSON data into a string to display it.</li>
+      </ul>
+    </ul>
+  </div>
+
+  <script>
+    function getSpecificUser() {
+      document.getElementById("submitBtn").onclick = (evt) => {
+        evt.preventDefault();
+        const idInput = parseFloat(document.getElementById("inputField").value);
+        const data = fetch(
+          "https://jsonplaceholder.typicode.com/users/" + idInput
+        )
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            console.log(data);
+            document.getElementById("userInfo").innerText = JSON.stringify(
+              data,
+              null,
+              2
+            );
+          })
+          .catch(function (error) {
+            console.log("Error:", error);
+            document.getElementById("userInfo").innerText =
+              "Error fetching user data";
+          });
+      };
+    }
+    getSpecificUser();
+
+    function getAllUsers() {
+      document.getElementById("getAllBtn").onclick = (evt) => {
+        evt.preventDefault();
+        document.getElementById("userInfo").innerText = "";
+        const data = fetch("https://jsonplaceholder.typicode.com/users")
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            console.log(data);
+
+            const tBody = document.getElementById("tbody");
+            const tRows = data.map((user) => {
+              return `
+                  <tr>
+                      <td>${user.name}</td>
+                      <td>${user.phone}</td>  
+                  </tr>
+                  `;
+            });
+            tBody.innerHTML = tRows.join("");
+          });
+      };
+    }
+    getAllUsers();
+  </script>
+</body>

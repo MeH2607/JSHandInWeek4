@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <style>
+    .row-height-30 {
+      height: 35vh;
+    }
+    .row-height-55 {
+      height: 55vh;
+    }
+    .col {
+      border: 1px solid steelblue;
+    }
+
+    #formDiv
+{
+    height:100%;
+    flex: 1 1 auto;
+    margin:0 auto;
+    display:block;
+}
+
+input{
+    display:block;
+}
+
+  </style>
+</head>
+
+<body style="font-family: sans-serif">
+  <div style="margin-top:1em;margin-left: 3%;width: 90%;margin-right: auto;">
+    <h2>Car's 'R' Us Client Demo - Version poor ;-)</h2>
+    <div class="container-fluid">
+      <div class="row row-height-30">
+        <!--########################  SHOW ALL CARS OR MEMBERS ########################-->
+        <div class="col">
+          <h3>Show all Members or Cars</h3>
+          <button id="btn-get-all">Get all</button>
+          <p>Show what you find here</p>
+          <table style="display: block;" class="table">
+            <thead>
+              <tr>
+               <!-- <th>ID</th> -->
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Price pr day</th>
+              <!--  <th>Best Discount</th>-->
+              </tr>
+            </thead>
+            <tbody style="display:block;max-height: 8em;overflow-y: scroll;" id="tbody">
+          </table>
+        </div>
+
+        <!--########################  FIND A SINGLE CAR OR MEMBER ########################-->
+        <div class="col">
+          <h3>Find a single Member or Car</h3>
+          <label for="text-for-id">Id</label>&nbsp;<input id="text-for-id" />
+          <button id="btn-find-car">Find</button>
+          <p id="found-car">Show what you find here</p>
+        </div>
+      </div>
+      <div class="row row-height-55">
+        <!--########################  ADD A CAR OR MEMBER ########################-->
+        <div class="col">
+          <h3>Add a Car or a Member</h3>
+          <div id="formDiv">
+            <form>
+              <label>brand</label>
+              <input type="text" id="brandInput">
+              <label>model</label>
+              <input type="text" id="modelInput">
+              <label>Price Per Day</label>
+              <input type="text" id="pricePerDayInput">
+              <label>Best Deal</label>
+              <input type="text" id="bestDealInput">
+              <input type="submit" id="add-car-btn" value="Add Car">
+            </form>
+
+            <p>Show returned data, if any</p>
+            <p>Use one of the two GET pages to verify that "something" was added</p>
+            <p id="addSuccess"></p>
+          </div>
+          
+        
+        </div>
+
+        <!--########################  EDIT A CAR OR MEMBER ########################-->
+        <div class="col">
+          <h3>Edit a Car or a Member (I had a problem with this part that i didn't have time to fix)</h3>
+          <label for="text-for-id2">Id</label>&nbsp;<input id="text-for-id2" />
+          <button id="findCarBtn">Find item to edit</button>
+          <p>Show what you find here, and let users edit fields</p>
+          <div id="editFormDiv"></div>>
+          <button id="submitEditBtn">Submit edited item</button>
+          <p id="editSuccess"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div style="border: 1px solid black; border-radius: 5px; padding: 1em">
+  
+   <li> Explain how you, for the POST-question, created the object that must match your DTO class on the server.</li>
+   <ul>
+    <li>
+      To make the POST object, I include a body to the fetch request, where I make a JSON object with the relevant attributes that I want to send with my request.
+    </li>
+  </ul>
+   <li> What must be added to a fetch-POST request (similar to what you did with postman) Explain the purpose of each part</li>
+   <ul>
+    <li>
+      First I define the request method, which is POST here, request header to define the content type to be JSON.
+    </li>
+    <li>
+      Then I include the JSON body that I want to send with my request.
+    </li>
+  </ul>
+  
+  </div>
+
+
+
+  <script >
+
+
+    //Get All Cars
+    document.getElementById("btn-get-all").onclick = (evt) => {
+        evt.preventDefault();
+        const data = fetch("http://localhost:8081/api/cars")
+        .then(function(response){
+            return response.json()
+        })
+        .then(function(data){
+            console.log(data);
+
+            const tableBody = document.getElementById("tbody");
+            const tableRow = data.map((car)=>{
+                return `
+                <tr>
+                    <td>${car.brand}</td>
+                    <td>${car.model}</td>
+                    <td>${car.pricePrDay}</td>
+                    </tr>
+                `
+            });
+            tableBody.innerHTML = tableRow.join("");
+        });
+    };
+
+    //Get specific car
+    document.getElementById("btn-find-car").onclick = (evt) =>{
+        evt.preventDefault();
+        const idInput = document.getElementById("text-for-id").value;
+       const data = fetch("http://localhost:8081/api/cars/"+idInput)
+        .then(function(response){
+            return response.json()
+        })
+        .then(function(data){
+            console.log(data);
+            const carData = JSON.stringify(data, null, 2);
+            
+            document.getElementById("found-car").innerHTML = carData;
+        })
+    }
+
+
+    // Add a car
+    document.getElementById("add-car-btn").onclick = (evt) =>{
+        evt.preventDefault();
+        const brandInput = document.getElementById("brandInput").value;
+        const modelInput = document.getElementById("modelInput").value;
+        const PricePerDayInput = document.getElementById("pricePerDayInput").value;
+        const bestDealInput = document.getElementById("bestDealInput").value;
+
+         fetch("http://localhost:8081/api/cars",{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                brand: brandInput,
+                model: modelInput,
+                pricePrDay: PricePerDayInput,
+                bestDiscount: bestDealInput
+            })
+        })
+        .then(function(response){
+            return response.json()
+        })
+        .then(function(data){
+            console.log(data);
+            
+            document.getElementById("addSuccess").innerHTML = "success";
+
+        })
+    }
+
+
+    //Find car to edit
+    document.getElementById("findCarBtn").onclick = (evt)=>{
+        evt.preventDefault();
+
+        const idInput = document.getElementById("text-for-id2").value;
+       const data = fetch("http://localhost:8081/api/cars/"+idInput)
+        .then(function(response){
+            return response.json()
+        })
+        .then(function(data){
+            console.log(data);
+            const carData = JSON.stringify(data, null, 2);
+            
+            document.getElementById("editFormDiv").innerHTML = `
+        <div id="formDiv">
+          <form>
+            <label>brand</label>
+            <input type="text" id="brandInputEdit" value="${data.brand}">
+            <label>model</label>
+            <input type="text" id="modelInputEdit" value="${data.model}">
+            <label>Price Per Day</label>
+            <input type="text" id="pricePerDayInputEdit" value="${data.pricePrDay}">
+            <label>Best Deal</label>
+            <input type="text" id="bestDealInputEdit" value="${data.bestDiscount}">
+          </form>
+        </div>`;
+    });
+
+    document.getElementById("submitEditBtn").onclick = (evt2)=>{
+    evt2.preventDefault();
+
+    const brandInputEdit = document.getElementById("brandInputEdit").value;
+        const modelInputEdit = document.getElementById("modelInputEdit").value;
+        const PricePerDayInputEdit = document.getElementById("pricePerDayInputEdit").value;
+        const bestDealInputEdit = document.getElementById("bestDealInputEdit").value;
+        const idInputEdit = document.getElementById("text-for-id2").value; 
+
+    fetch("http://localhost:8081/api/cars/" + idInputEdit,{
+            method: 'PUT',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: idInputEdit,
+                brand: brandInputEdit,
+                model: modelInputEdit,
+                pricePrDay: PricePerDayInputEdit,
+                bestDiscount: bestDealInputEdit
+            })
+        })
+        .then(res => {
+    if (!res.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return res.json();
+})
+        .then(function(dat){
+            console.log(dat);
+            
+            document.getElementById("editSuccess").innerHTML = "Edit success";
+
+        })
+
+
+    }
+};
+    
+
+  </script>
+</body>
+
+</html>
